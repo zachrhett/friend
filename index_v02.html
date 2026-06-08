@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F.R.I.E.N.D. v0.2</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --blue:#0b66ff;--dark:#041022;--panel:#0b234a;--panel2:#102f63;
+  --red:#ff2f45;--yellow:#ffd84a;--white:#fff;--cyan:#22d7ff;
+}
+body{
+  margin:0;min-height:100vh;background:radial-gradient(circle at top,#123669,#02060d 70%);
+  font-family:Arial,Helvetica,sans-serif;color:white;display:flex;justify-content:center;align-items:center;padding:20px;
+}
+.phone{
+  width:390px;max-width:96vw;background:#121212;border:10px solid #333;border-radius:36px;padding:14px;
+  box-shadow:0 0 40px rgba(34,215,255,.35);
+}
+.scanner{height:18px;width:145px;margin:0 auto 10px;border-radius:20px;background:#050505;border:1px solid #555;text-align:center;font-size:8px;letter-spacing:1px;color:#aaa;line-height:18px}
+.screen{
+  height:730px;background:linear-gradient(180deg,#061936,#071123);border-radius:22px;overflow:hidden;border:2px solid #174f9d;position:relative;
+}
+.header{
+  padding:12px;background:#071a38;border-bottom:1px solid rgba(255,255,255,.15)
+}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:22px;font-weight:900;letter-spacing:3px}
+.store{text-align:right;font-size:11px;color:#d8ecff}
+.subtitle{font-size:9px;color:#ffd84a;margin-top:2px}
+.role{margin-top:8px;padding:8px;border:1px solid var(--cyan);border-radius:10px;background:#08234d;color:#fff;width:100%;font-size:14px}
+.content{height:600px;overflow-y:auto;padding:12px}
+.card{
+  background:rgba(11,35,74,.92);border:1px solid rgba(34,215,255,.45);border-radius:15px;padding:12px;margin-bottom:12px;
+  box-shadow:inset 0 0 18px rgba(34,215,255,.06);
+}
+.card h2,.card h3{margin:0 0 8px}
+.center{text-align:center}
+.scoreCircle{
+  width:170px;height:170px;border-radius:50%;margin:12px auto;border:8px solid var(--cyan);
+  display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#123d7c,#061323 72%);
+  box-shadow:0 0 28px rgba(34,215,255,.7),inset 0 0 25px rgba(11,102,255,.5);
+}
+.scoreCircle .big{font-size:38px;font-weight:900}
+.scoreCircle .small{font-size:12px;color:#d8ecff}
+.missionCircle{border-color:var(--red);box-shadow:0 0 28px rgba(255,47,69,.7),inset 0 0 25px rgba(11,102,255,.4)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.metric{background:#0c326b;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:10px}
+.metric span{font-size:11px;color:#baddff;display:block}
+.metric strong{font-size:22px}
+.bar{height:8px;background:#08172f;border-radius:20px;margin-top:7px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:20px}
+.mission{
+  display:flex;gap:10px;align-items:center;background:#071b3a;border:1px solid rgba(255,255,255,.12);
+  padding:10px;border-radius:12px;margin-top:8px
+}
+.dot{width:10px;height:42px;border-radius:12px;background:var(--red)}
+.dot.yellow{background:var(--yellow)}.dot.blue{background:var(--blue)}.dot.white{background:#fff}
+.mission b{display:block}.mission small{color:#c8e4ff}
+.nav{
+  position:absolute;bottom:0;left:0;right:0;height:58px;background:#06142b;border-top:1px solid rgba(255,255,255,.15);
+  display:grid;grid-template-columns:repeat(4,1fr)
+}
+.nav button{
+  background:none;border:none;color:#cce5ff;font-size:11px;font-weight:bold
+}
+.nav button.active{color:#ffd84a;border-top:3px solid #ffd84a}
+.actionBtn{
+  width:100%;padding:12px;border:0;border-radius:12px;background:#0b66ff;color:white;font-weight:900;margin-top:10px
+}
+.badge{display:inline-block;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:bold;margin-left:6px}
+.red{background:var(--red)}.yellow{background:var(--yellow);color:#111}.blue{background:var(--blue)}.white{background:#fff;color:#111}
+ol{padding-left:20px;line-height:1.55}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="scanner">ZEBRA TC-52</div>
+  <div class="screen">
+    <div class="header">
+      <div class="top">
+        <div>
+          <div class="logo">F.R.I.E.N.D.</div>
+          <div class="subtitle">Full Retail Integration Engaged Network Dynamics</div>
+        </div>
+        <div class="store">Store #129<br>King Soopers<br>Erie, CO</div>
+      </div>
+      <select class="role" id="viewSelect" onchange="setView(this.value)">
+        <option value="composite">Store Leader Composite</option>
+        <option value="mission">Guided Mission Center</option>
+        <option value="department">Deli Department View</option>
+        <option value="associate">Associate Mission View</option>
+      </select>
+    </div>
+
+    <div class="content" id="app"></div>
+
+    <div class="nav">
+      <button id="nav-composite" onclick="setView('composite')">Composite</button>
+      <button id="nav-mission" onclick="setView('mission')">Missions</button>
+      <button id="nav-department" onclick="setView('department')">Department</button>
+      <button id="nav-associate" onclick="setView('associate')">Associate</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const data={
+  composite:{
+    html:`
+    <div class="card center">
+      <h2>Store Composite Score</h2>
+      <div class="scoreCircle"><div><div class="big">92</div><div class="small">/ 100</div></div></div>
+      <div>Overall store execution is strong. F.R.I.E.N.D. recommends focusing on shrink, training completion, and lunch rush execution.</div>
+    </div>
+    <div class="grid">
+      ${metric("Sales","94",94)}${metric("Labor","88",88)}${metric("Safety","98",98)}${metric("Food Safety","97",97)}
+      ${metric("Training","85",85)}${metric("Execution","91",91)}
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h3>Top 3 Store Missions</h3>
+      ${mission("Critical","Reduce Deli Shrink","Projected annual savings: $24,600","red")}
+      ${mission("Opportunity","Complete Training Gap","3 associates overdue","yellow")}
+      ${mission("Strategic","Improve Lunch Rush Flow","Recover $2.2K weekly sales gap","blue")}
+    </div>`
+  },
+  mission:{
+    html:`
+    <div class="card center">
+      <h2>Guided Mission Center <span class="badge red">Critical</span></h2>
+      <div class="scoreCircle missionCircle"><div><b>MISSION ALPHA</b><br><br>Deli Shrink<br>Reduction</div></div>
+      <div><b>Impact:</b> $24,600 annual savings</div>
+    </div>
+    <div class="card">
+      <h3>Why this mission matters</h3>
+      <p>Shrink is rising through small recurring execution gaps: thaw process, markdown timing, and overproduction late in the day.</p>
+    </div>
+    <div class="card">
+      <h3>Action Steps</h3>
+      <ol>
+        <li>Complete thaw and sell audit before 10 AM.</li>
+        <li>Review yesterday's markdown timing.</li>
+        <li>Adjust production plan for closing period.</li>
+        <li>Coach closing associate on rotation and labeling.</li>
+      </ol>
+      <button class="actionBtn" onclick="alert('Mission accepted')">Accept Mission</button>
+    </div>`
+  },
+  department:{
+    html:`
+    <div class="card">
+      <h2>Deli Department View</h2>
+      <div>F.R.I.E.N.D. is prioritizing production, food safety, and shrink control for today.</div>
+    </div>
+    <div class="grid">
+      ${metric("Sales","91",91)}${metric("Shrink","76",76)}${metric("Production","84",84)}${metric("Food Safety","98",98)}
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h3>Department Leader Missions</h3>
+      ${mission("Critical","Close Food Safety Log Gap","One temp log missing","red")}
+      ${mission("Opportunity","Adjust Hot Case Production","Reduce late-day overproduction","yellow")}
+      ${mission("Strategic","Prepare Team Huddle","Focus: execution rhythm","blue")}
+    </div>`
+  },
+  associate:{
+    html:`
+    <div class="card">
+      <h2>Associate Mission View</h2>
+      <div>Simple, clear, role-based missions for today's shift.</div>
+    </div>
+    <div class="card">
+      <h3>Your Missions</h3>
+      ${mission("Now","Refill grab-and-go case","Due by 11:00 AM","blue")}
+      ${mission("Next","Complete slicer safety check","Confirm with department leader","yellow")}
+      ${mission("Recognition","Great service yesterday","Customer compliment received","white")}
+      <button class="actionBtn" onclick="alert('Mission marked complete')">Mark Mission Complete</button>
+    </div>`
+  }
+};
+
+function metric(name,value,pct){
+  return `<div class="metric"><span>${name}</span><strong>${value}</strong><div class="bar"><div class="fill" style="width:${pct}%"></div></div></div>`;
+}
+function mission(label,title,detail,color){
+  return `<div class="mission"><div class="dot ${color}"></div><div><b>${title}</b><small>${label} • ${detail}</small></div></div>`;
+}
+function setView(view){
+  document.getElementById("app").innerHTML=data[view].html;
+  document.getElementById("viewSelect").value=view;
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  document.getElementById("nav-"+view).classList.add("active");
+}
+setView("composite");
+</script>
+</body>
+</html>
